@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
+"""Module for simple writing operations."""
 import codecs
 import json
 

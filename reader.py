@@ -17,3 +17,9 @@ def read_json(path, encoding='utf-8'):
     """Retrieve the content of a json file."""
     data = read(path, encoding)
     return json.loads(data)
+
+def read_binary(path):
+    """Retrieve an object from a binary file."""
+    with open(path, 'rb') as f:
+        binary_object = pickle.load(f)
+    return binary_object

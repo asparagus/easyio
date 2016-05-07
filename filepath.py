@@ -15,7 +15,7 @@ def get_files(path, extensions='*'):
     if path[-1] is not '/' and path[-1] is not '\\':
         path = path + '/'
 
-    if isinstance(extensions, str) or isinstance(extensions, unicode):
+    if isinstance(extensions, basestring):
         extensions = [extensions]
 
     all_files = [os.path.join(root, filename)
@@ -29,22 +29,30 @@ def get_files(path, extensions='*'):
 
     return filtered_files
 
-
-def path_leaf(path):
+def path_leaf(path, trim_extension=False):
     """Get the file name (without path) from a full path."""
     head, tail = ntpath.split(path)
-    return tail or ntpath.basename(head)
+    leaf = tail or ntpath.basename(head)
+    if trim_extension:
+        return os.path.splitext(leaf)[0]
+    else:
+        return leaf
 
 
 def get_extension(path):
-    """
-    Get the extension of a file.
-
+    """Get the extension of a file.
     >>> path = 'dir/file.txt'
     >>> get_extension(path)
     '.txt'
     """
     return os.path.splitext(path)[1]
+
+
+def create_path(path):
+    """Create a path if it does not exist."""
+    head, tail = ntpath.split(path)
+    if not os.path.exists(head):
+        os.makedirs(head)
 
 
 def unit_test():
