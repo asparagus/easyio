@@ -6,7 +6,6 @@ Manage different data formats and their operations.
 Permitted formats: csv, json, xls, xlsx.
 """
 import reader
-import writer
 import pandas
 import enum
 import filepath
@@ -20,7 +19,7 @@ def transform(in_path, out_format):
     out_path = in_path.replace(in_format.name, out_format.name)
 
     data = read(in_path, in_format)
-    write(out_path, out_format)
+    write(out_path, data, out_format)
 
 
 def infer_format(path):
@@ -28,7 +27,7 @@ def infer_format(path):
     ext = filepath.get_extension(path)
     if not ext:
         raise ValueError(
-            "The input file has no extension, cannot infer a format.") 
+            "The input file has no extension, cannot infer a format.")
 
     in_format = None
     format_name = ext[1:]
@@ -55,6 +54,7 @@ def read(path, in_format = None):
 
     return dataframe
 
+
 def write(path, dataframe, out_format = None):
     """Write the dataframe to a given path with a given format."""
     if not out_format:
@@ -66,6 +66,7 @@ def write(path, dataframe, out_format = None):
         dataframe.to_json(path, orient='split', force_ascii=False)
     elif out_format in {Format.xls, Format.xlsx}:
         dataframe.to_excel(path, index=False)
+
 
 def concat(files, out_path):
     """Concatenate multiple files."""
