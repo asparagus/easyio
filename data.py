@@ -29,16 +29,15 @@ def infer_format(path):
         raise ValueError(
             "The input file has no extension, cannot infer a format.")
 
-    in_format = None
     format_name = ext[1:]
     if format_name in Format.__members__:
         return Format[format_name]
     else:
         raise ValueError(
-            "The input's file extension does not correspond to a valid format.")
+            "The file's extension does not correspond to a valid format.")
 
 
-def read(path, in_format = None):
+def read(path, in_format=None):
     """Read a dataframe from a given path with a given format."""
     if not in_format:
         in_format = infer_format(path)
@@ -55,7 +54,7 @@ def read(path, in_format = None):
     return dataframe
 
 
-def write(path, dataframe, out_format = None):
+def write(path, dataframe, out_format=None):
     """Write the dataframe to a given path with a given format."""
     if not out_format:
         out_format = infer_format(path)
