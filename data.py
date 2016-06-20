@@ -34,7 +34,9 @@ def infer_format(path):
         return Format[format_name]
     else:
         raise ValueError(
-            "The file's extension does not correspond to a valid format.")
+            "The file's extension (" +
+            format_name +
+            ")does not correspond to a valid format.")
 
 
 def read(path, in_format=None):
@@ -50,6 +52,8 @@ def read(path, in_format=None):
         dataframe = pandas.DataFrame.from_dict(json_object)
     elif in_format in {Format.xls, Format.xlsx}:
         dataframe = pandas.read_excel(path)
+    else:
+        dataframe = reader.read_binary(path)
 
     return dataframe
 
@@ -82,3 +86,13 @@ def unit_test():
 
 if __name__ == '__main__':
     unit_test()
+    files = filepath.get_files(
+        '../sensus-algorithm/output/sentiment/v13/csv', '.csv')
+
+    for f in files:
+        transform(f, Format.xls)
+
+    # files = filepath.get_files(
+    #     '../sensus-algorithm/output/sentiment/v13/xls')
+
+    # concat(files, '../sensus-algorithm/output/sentiment/v13/xls/full.xlsx')
