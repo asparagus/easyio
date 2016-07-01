@@ -53,7 +53,7 @@ def read(path, in_format=None):
     elif in_format in {Format.xls, Format.xlsx}:
         dataframe = pandas.read_excel(path)
     else:
-        dataframe = reader.read_binary(path)
+        raise ValueError("Invalid file extension %s" % in_format)
 
     return dataframe
 
@@ -69,6 +69,8 @@ def write(path, dataframe, out_format=None):
         dataframe.to_json(path, orient='split', force_ascii=False)
     elif out_format in {Format.xls, Format.xlsx}:
         dataframe.to_excel(path, index=False)
+    else:
+        raise ValueError("Invalid file extension %s" % out_format)
 
 
 def concat(files, out_path):

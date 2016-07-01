@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 """Helper methods for dealing with directories and files."""
 import os
+import ntpath
 
 
 def remove(paths):
@@ -29,6 +30,7 @@ def get_files(path, extensions='*'):
 
     return filtered_files
 
+
 def path_leaf(path, trim_extension=False):
     """Get the file name (without path) from a full path."""
     head, tail = ntpath.split(path)
@@ -41,6 +43,7 @@ def path_leaf(path, trim_extension=False):
 
 def get_extension(path):
     """Get the extension of a file.
+
     >>> path = 'dir/file.txt'
     >>> get_extension(path)
     '.txt'
