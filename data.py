@@ -39,36 +39,37 @@ def infer_format(path):
             ")does not correspond to a valid format.")
 
 
-def read(path, in_format=None):
+def read(path, in_format=None, encoding='utf-8'):
     """Read a dataframe from a given path with a given format."""
     if not in_format:
         in_format = infer_format(path)
 
     dataframe = None
     if in_format == Format.csv:
-        dataframe = pandas.read_csv(path)
+        dataframe = pandas.read_csv(path, encoding=encoding)
     elif in_format == Format.json:
-        json_object = reader.read_json(path)
+        json_object = reader.read_json(path, encoding=encoding)
         dataframe = pandas.DataFrame.from_dict(json_object)
     elif in_format in {Format.xls, Format.xlsx}:
-        dataframe = pandas.read_excel(path)
+        dataframe = pandas.read_excel(path, encoding=encoding)
     else:
         raise ValueError("Invalid file extension %s" % in_format)
 
     return dataframe
 
 
-def write(path, dataframe, out_format=None):
+def write(path, dataframe, out_format=None, encoding='utf-8'):
     """Write the dataframe to a given path with a given format."""
     if not out_format:
         out_format = infer_format(path)
 
     if out_format == Format.csv:
-        dataframe.to_csv(path, index=False)
+        dataframe.to_csv(path, index=False, encoding=encoding)
     elif out_format == Format.json:
-        dataframe.to_json(path, orient='split', force_ascii=False)
+        dataframe.to_json(
+            path, orient='split', force_ascii=False, encoding=encoding)
     elif out_format in {Format.xls, Format.xlsx}:
-        dataframe.to_excel(path, index=False)
+        dataframe.to_excel(path, index=False, encoding=encoding)
     else:
         raise ValueError("Invalid file extension %s" % out_format)
 
