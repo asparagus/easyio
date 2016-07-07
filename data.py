@@ -9,6 +9,7 @@ import reader
 import pandas
 import enum
 import filepath
+import random
 
 Format = enum.Enum('Format', 'csv json xls xlsx')
 
@@ -79,6 +80,36 @@ def concat(files, out_path):
     dataframes = [read(path) for path in files]
     concat_dataframe = pandas.concat(dataframes, ignore_index=True)
     write(out_path, concat_dataframe)
+
+
+def split(dataframe, fractions):
+    """Split a dataframe according to the given fractions."""
+    if not fractions:
+        raise ValueError("Need fractions for the split.")
+
+    if len(fractions) == 1:
+        return [dataframe]
+
+    x, s = fractions[0], fractions[1:]
+    first, rest = binary_split(dataframe, 1.0 * x / sum(s))
+
+    return [first] + split(rest, fractions)
+
+
+def binary_split(dataframe, fraction):
+    """Split a dataframe in two according to the given fraction."""
+    n = dataframe.shape[0]
+    all_indices = range(n)
+
+    first_n = int(n * fraction)
+    first_indices = random.sample(all_indices, first_n)
+
+    set_first_indices = set(first_indices)
+    second_indices = [i for i in all_indices if i not in set_first_indices]
+
+    first_data = dataframe.loc[first_indices, :]
+    second_data = dataframe.loc[second_indices, :]
+    return first_data, second_data
 
 
 def unit_test():
