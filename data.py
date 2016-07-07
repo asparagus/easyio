@@ -90,10 +90,11 @@ def split(dataframe, fractions):
     if len(fractions) == 1:
         return [dataframe]
 
-    x, s = fractions[0], fractions[1:]
-    first, rest = binary_split(dataframe, 1.0 * x / sum(s))
+    s = sum(fractions)
+    x, xs = fractions[0], fractions[1:]
+    first, rest = binary_split(dataframe, 1.0 * x / s)
 
-    return [first] + split(rest, fractions)
+    return [first] + split(rest, xs)
 
 
 def binary_split(dataframe, fraction):
