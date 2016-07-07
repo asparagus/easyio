@@ -100,7 +100,7 @@ def split(dataframe, fractions):
 def binary_split(dataframe, fraction):
     """Split a dataframe in two according to the given fraction."""
     n = dataframe.shape[0]
-    all_indices = range(n)
+    all_indices = dataframe.index.values
 
     first_n = int(n * fraction)
     first_indices = random.sample(all_indices, first_n)
