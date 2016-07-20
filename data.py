@@ -65,6 +65,7 @@ def write(path, dataframe, out_format=None, encoding='utf-8', delimiter=','):
     if not out_format:
         out_format = infer_format(path)
 
+    filepath.create_path(path)
     if out_format == Format.csv:
         dataframe.to_csv(
             path, index=False, delimiter=delimiter, encoding=encoding)
