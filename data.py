@@ -40,14 +40,15 @@ def infer_format(path):
             ")does not correspond to a valid format.")
 
 
-def read(path, in_format=None, encoding='utf-8'):
+def read(path, in_format=None, encoding='utf-8', delimiter=','):
     """Read a dataframe from a given path with a given format."""
     if not in_format:
         in_format = infer_format(path)
 
     dataframe = None
     if in_format == Format.csv:
-        dataframe = pandas.read_csv(path, encoding=encoding)
+        dataframe = pandas.read_csv(
+            path, delimiter=delimiter, encoding=encoding)
     elif in_format == Format.json:
         json_object = reader.read_json(path, encoding=encoding)
         dataframe = pandas.DataFrame.from_dict(json_object)
@@ -59,13 +60,14 @@ def read(path, in_format=None, encoding='utf-8'):
     return dataframe
 
 
-def write(path, dataframe, out_format=None, encoding='utf-8'):
+def write(path, dataframe, out_format=None, encoding='utf-8', delimiter=','):
     """Write the dataframe to a given path with a given format."""
     if not out_format:
         out_format = infer_format(path)
 
     if out_format == Format.csv:
-        dataframe.to_csv(path, index=False, encoding=encoding)
+        dataframe.to_csv(
+            path, index=False, delimiter=delimiter, encoding=encoding)
     elif out_format == Format.json:
         dataframe.to_json(
             path, orient='split', force_ascii=False, encoding=encoding)
